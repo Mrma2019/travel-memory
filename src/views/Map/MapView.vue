@@ -14,6 +14,7 @@ const showRoute = ref(false)
 const loading = ref(true)
 const isMapExpanded = ref(false)
 const showAddTravel = ref(false)
+const { isMobile } = useResponsive()
 
 onMounted(async () => {
   if (travelStore.travels.length === 0) await travelStore.fetchTravels()
@@ -41,6 +42,7 @@ const recentTravels = computed(() => {
 })
 
 import { computed } from 'vue'
+import { useResponsive } from '@/hooks/useResponsive'
 </script>
 
 <template>
@@ -62,7 +64,8 @@ import { computed } from 'vue'
       <div class="map-card cartoon-card" :class="{ expanded: isMapExpanded }">
         <WorldMap :travels="travelStore.travels" :photos="photoStore.photos" :center="{ lat: 20, lng: 40 }" :zoom="2"
           :show-route="showRoute" />
-        <button class="map-expand-btn" @click="toggleMapExpand" :title="isMapExpanded ? '缩小地图' : '放大地图'">
+        <button class="map-expand-btn" :style="{ top: isMapExpanded && isMobile() ? '64px' : '' }"
+          @click="toggleMapExpand" :title="isMapExpanded ? '缩小地图' : '放大地图'">
           {{ isMapExpanded ? '🔎' : '🔍' }}
         </button>
       </div>
@@ -251,7 +254,6 @@ import { computed } from 'vue'
 
     &.expanded {
       left: 0;
-      bottom: 64px;
     }
   }
 }

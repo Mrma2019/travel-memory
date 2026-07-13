@@ -1,0 +1,25 @@
+import { createApp } from 'vue'
+import { createPinia } from 'pinia'
+import naive from 'naive-ui'
+import App from './App.vue'
+import router from './router'
+import { useThemeStore } from './stores/useThemeStore'
+import { useUserStore } from './stores/useUserStore'
+import './assets/styles/global.scss'
+
+const app = createApp(App)
+const pinia = createPinia()
+
+app.use(pinia)
+app.use(router)
+app.use(naive)
+
+// 初始化主题
+const themeStore = useThemeStore()
+themeStore.init()
+
+// 初始化用户状态
+const userStore = useUserStore()
+userStore.init()
+
+app.mount('#app')

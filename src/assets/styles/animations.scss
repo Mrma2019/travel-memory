@@ -1,0 +1,166 @@
+// ============================================
+// Travel Memory — 全局动画
+// ============================================
+
+// 页面切换动画
+.page-enter-active,
+.page-leave-active {
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.page-enter-from {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+.page-leave-to {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
+// 淡入
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+// 弹入
+.pop-enter-active {
+  animation: pop-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.pop-leave-active {
+  animation: pop-in 0.2s ease reverse;
+}
+@keyframes pop-in {
+  0% { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+// 云朵漂浮
+@keyframes cloud-float {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(20px); }
+}
+
+.cloud-animate {
+  animation: cloud-float 6s ease-in-out infinite;
+}
+
+.cloud-animate-slow {
+  animation: cloud-float 10s ease-in-out infinite;
+}
+
+.cloud-animate-fast {
+  animation: cloud-float 4s ease-in-out infinite;
+}
+
+// 飞机飞行动画
+@keyframes plane-fly {
+  0% {
+    transform: translate(-100px, 50px) rotate(15deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(100vw + 100px), -30px) rotate(15deg);
+    opacity: 0;
+  }
+}
+
+.plane-animate {
+  animation: plane-fly 8s ease-in-out infinite;
+}
+
+// 数字滚动
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.count-animate {
+  animation: count-up 0.6s ease forwards;
+}
+
+// 心跳
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1.1); }
+  50% { transform: scale(1); }
+  75% { transform: scale(1.1); }
+}
+
+.heartbeat {
+  animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+// 翻转
+@keyframes flip {
+  0% { transform: perspective(400px) rotateY(0); }
+  100% { transform: perspective(400px) rotateY(360deg); }
+}
+
+.flip-animate {
+  animation: flip 0.8s ease forwards;
+}
+
+// 摇晃（贴纸效果）
+@keyframes wobble {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+
+.wobble {
+  animation: wobble 2s ease-in-out infinite;
+}
+
+// 路径绘制
+@keyframes dash {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+// 脉冲光晕
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 5px currentColor;
+  }
+  50% {
+    box-shadow: 0 0 20px currentColor, 0 0 40px currentColor;
+  }
+}
+
+.glow-pulse {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+// 下落弹跳
+@keyframes bounce-in {
+  0% { transform: translateY(-100px); opacity: 0; }
+  60% { transform: translateY(10px); opacity: 1; }
+  80% { transform: translateY(-5px); }
+  100% { transform: translateY(0); }
+}
+
+.bounce-in {
+  animation: bounce-in 0.6s ease forwards;
+}
+
+// 旋转
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.spin-slow {
+  animation: spin-slow 20s linear infinite;
+}

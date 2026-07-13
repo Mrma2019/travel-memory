@@ -1,0 +1,98 @@
+[
+  {
+    "id": "user-001",
+    "username": "小旅",
+    "avatar": "",
+    "email": "traveler@travelmemory.com",
+    "bio": "一个热爱旅行的UX设计师 🎨 | 梦想是走遍世界上100个国家",
+    "hobbies": ["📷 摄影", "☕ 咖啡", "✈️ 旅行", "✍️ 写作"],
+    "createdAt": "2024-01-15T08:00:00Z",
+    "preferences": { "theme": "cartoon", "language": "zh" },
+    "role": "admin",
+    "status": "active"
+  },
+  {
+    "id": "user-002",
+    "username": "旅行青蛙",
+    "avatar": "",
+    "email": "frog@travel.com",
+    "bio": "背包客一枚，喜欢穷游世界",
+    "hobbies": ["🚶 徒步", "🏕️ 露营"],
+    "createdAt": "2024-02-20T10:00:00Z",
+    "preferences": { "theme": "minimal", "language": "zh" },
+    "role": "user",
+    "status": "active"
+  },
+  {
+    "id": "user-003",
+    "username": "风吹麦浪",
+    "avatar": "",
+    "email": "ma@travel.com",
+    "bio": "摄影师，用镜头看世界",
+    "hobbies": ["📷 摄影", "🎬 电影", "🍜 美食"],
+    "createdAt": "2024-03-08T14:00:00Z",
+    "preferences": { "theme": "retro", "language": "zh" },
+    "role": "user",
+    "status": "active"
+  },
+  {
+    "id": "user-004",
+    "username": "摄影爱好者",
+    "avatar": "",
+    "email": "photo@travel.com",
+    "bio": "爱拍风光和人文",
+    "hobbies": ["📷 摄影", "🌅 日出"],
+    "createdAt": "2024-04-12T09:00:00Z",
+    "preferences": { "theme": "cartoon", "language": "zh" },
+    "role": "user",
+    "status": "disabled"
+  },
+  {
+    "id": "user-005",
+    "username": "背包达人",
+    "avatar": "",
+    "email": "backpack@travel.com",
+    "bio": "背着包走遍世界的每一个角落",
+    "hobbies": ["🎒 背包", "🗺️ 探险", "🏔️ 登山"],
+    "createdAt": "2024-05-01T16:00:00Z",
+    "preferences": { "theme": "scifi", "language": "zh" },
+    "role": "user",
+    "status": "active"
+  },
+  {
+    "id": "user-006",
+    "username": "美食侦探",
+    "avatar": "",
+    "email": "food@travel.com",
+    "bio": "旅行的意义就是吃遍全世界",
+    "hobbies": ["🍜 美食", "🍷 品酒", "☕ 咖啡"],
+    "createdAt": "2024-06-18T11:00:00Z",
+    "preferences": { "theme": "cartoon", "language": "zh" },
+    "role": "user",
+    "status": "active"
+  },
+  {
+    "id": "user-007",
+    "username": "探险小王子",
+    "avatar": "",
+    "email": "explore@travel.com",
+    "bio": "不冒险的人生不值得过",
+    "hobbies": ["🧗 攀岩", "🤿 潜水", "🪂 跳伞"],
+    "createdAt": "2024-07-22T08:00:00Z",
+    "preferences": { "theme": "scifi", "language": "zh" },
+    "role": "user",
+    "status": "disabled"
+  },
+  {
+    "id": "user-008",
+    "username": "文艺少女",
+    "avatar": "",
+    "email": "art@travel.com",
+    "bio": "用画笔和文字记录每一次旅行",
+    "hobbies": ["🎨 绘画", "✍️ 写作", "📚 阅读"],
+    "createdAt": "2024-08-30T13:00:00Z",
+    "preferences": { "theme": "retro", "language": "zh" },
+    "role": "user",
+    "status": "active"
+  }
+]

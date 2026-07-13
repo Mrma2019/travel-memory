@@ -1,0 +1,141 @@
+[
+  {
+    "id": "event-001",
+    "type": "flight",
+    "date": "2024-03-10",
+    "title": "🛫 飞往东京",
+    "description": "从上海浦东出发，搭乘全日空航班飞往东京成田机场。心情激动，期待已久的樱花之旅即将开始！",
+    "icon": "✈️",
+    "travelId": "travel-001"
+  },
+  {
+    "id": "event-002",
+    "type": "arrival",
+    "date": "2024-03-10",
+    "title": "🌸 抵达东京",
+    "description": "成田机场出来，空气中已经弥漫着春天的气息。乘坐NEX特快列车进入市区，窗外的樱花树已经开始绽放。",
+    "icon": "🗾",
+    "travelId": "travel-001"
+  },
+  {
+    "id": "event-003",
+    "type": "photo",
+    "date": "2024-03-12",
+    "title": "📷 上野公园赏樱",
+    "description": "在上野公园拍到了最美的樱花照片。樱花树下，当地人在野餐，画面温馨而美好。",
+    "icon": "📸",
+    "travelId": "travel-001",
+    "photoId": "photo-001"
+  },
+  {
+    "id": "event-004",
+    "type": "story",
+    "date": "2024-03-15",
+    "title": "🍣 筑地市场美食之旅",
+    "description": "在筑地市场外市场，品尝了最新鲜的寿司和海鲜丼。排队一小时，美味一辈子！",
+    "icon": "🍣",
+    "travelId": "travel-001"
+  },
+  {
+    "id": "event-005",
+    "type": "flight",
+    "date": "2024-05-20",
+    "title": "✈️ 飞往巴黎",
+    "description": "搭乘法航航班，从北京飞往巴黎戴高乐机场。一场艺术与浪漫的旅程即将开始。",
+    "icon": "✈️",
+    "travelId": "travel-002"
+  },
+  {
+    "id": "event-006",
+    "type": "arrival",
+    "date": "2024-05-20",
+    "title": "🗼 抵达巴黎",
+    "description": "巴黎的空气里都是浪漫的味道。从机场坐RER B线进市区，远远就看到了埃菲尔铁塔的身影。",
+    "icon": "🥐",
+    "travelId": "travel-002"
+  },
+  {
+    "id": "event-007",
+    "type": "photo",
+    "date": "2024-05-22",
+    "title": "🌃 埃菲尔铁塔夜景",
+    "description": "铁塔晚上整点会闪灯5分钟，金色的灯光让整个建筑如梦如幻。",
+    "icon": "✨",
+    "travelId": "travel-002",
+    "photoId": "photo-004"
+  },
+  {
+    "id": "event-008",
+    "type": "story",
+    "date": "2024-05-23",
+    "title": "🎨 卢浮宫一日",
+    "description": "在卢浮宫从早上待到闭馆，看了蒙娜丽莎、胜利女神、维纳斯。艺术的力量让人震撼。",
+    "icon": "🎭",
+    "travelId": "travel-002"
+  },
+  {
+    "id": "event-009",
+    "type": "flight",
+    "date": "2024-07-05",
+    "title": "🌴 飞往清迈",
+    "description": "搭乘亚航航班，从昆明飞往清迈。逃离城市的喧嚣，寻找内心的平静。",
+    "icon": "✈️",
+    "travelId": "travel-003"
+  },
+  {
+    "id": "event-010",
+    "type": "photo",
+    "date": "2024-07-07",
+    "title": "🛕 契迪龙寺",
+    "description": "清迈古城中最宏伟的寺庙，古老的佛塔让人心生敬畏。",
+    "icon": "🛕",
+    "travelId": "travel-003",
+    "photoId": "photo-006"
+  },
+  {
+    "id": "event-011",
+    "type": "flight",
+    "date": "2024-09-01",
+    "title": "🏛️ 飞往罗马",
+    "description": "搭乘汉莎航空，经慕尼黑转机飞往罗马。永恒之城，我来了！",
+    "icon": "✈️",
+    "travelId": "travel-004"
+  },
+  {
+    "id": "event-012",
+    "type": "photo",
+    "date": "2024-09-03",
+    "title": "🏟️ 罗马斗兽场",
+    "description": "夕阳下的斗兽场格外壮观。站在两千年的历史面前，感受到自己的渺小。",
+    "icon": "🏛️",
+    "travelId": "travel-004",
+    "photoId": "photo-008"
+  },
+  {
+    "id": "event-013",
+    "type": "story",
+    "date": "2024-09-08",
+    "title": "🍷 托斯卡纳的午后",
+    "description": "在托斯卡纳的葡萄酒庄园，品尝了最地道的基安蒂红酒。阳光、葡萄园、美食，人生不过如此。",
+    "icon": "🍷",
+    "travelId": "travel-004"
+  },
+  {
+    "id": "event-014",
+    "type": "flight",
+    "date": "2025-01-10",
+    "title": "🦘 飞往悉尼",
+    "description": "搭乘澳航，从香港飞往悉尼。北半球的冬天，南半球的夏天，反季节旅行总是充满惊喜。",
+    "icon": "✈️",
+    "travelId": "travel-006"
+  },
+  {
+    "id": "event-015",
+    "type": "achievement",
+    "date": "2025-01-20",
+    "title": "🎖️ 解锁成就：五大洲探索者",
+    "description": "完成第六次国际旅行，足迹遍布亚洲、欧洲、大洋洲！",
+    "icon": "🏆",
+    "travelId": "travel-006"
+  }
+]

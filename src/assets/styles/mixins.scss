@@ -1,0 +1,113 @@
+// ============================================
+// Travel Memory — 响应式 Mixin
+// ============================================
+
+@use 'variables' as *;
+
+// 手机端
+@mixin mobile {
+  @media (max-width: #{$breakpoint-mobile - 1px}) {
+    @content;
+  }
+}
+
+// 平板端
+@mixin tablet {
+  @media (min-width: $breakpoint-mobile) and (max-width: #{$breakpoint-tablet - 1px}) {
+    @content;
+  }
+}
+
+// 平板及以下
+@mixin tablet-down {
+  @media (max-width: #{$breakpoint-tablet - 1px}) {
+    @content;
+  }
+}
+
+// 桌面端
+@mixin desktop {
+  @media (min-width: $breakpoint-tablet) {
+    @content;
+  }
+}
+
+// 自定义断点
+@mixin breakpoint($size) {
+  @media (max-width: $size) {
+    @content;
+  }
+}
+
+// 邮票锯齿边框
+@mixin stamp-border($color, $bg: white) {
+  border: 3px dashed $color;
+  border-radius: $radius-stamp;
+  background: $bg;
+  position: relative;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    left: -15px;
+    width: 12px;
+    height: 12px;
+    background: $bg;
+    border: 2px solid $color;
+    border-radius: 50%;
+  }
+}
+
+// 拍立得卡片
+@mixin polaroid($bg: white) {
+  background: $bg;
+  padding: 12px 12px 40px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: rotate(-2deg);
+  transition: transform $transition-spring;
+
+  &:hover {
+    transform: rotate(0deg) scale(1.02);
+  }
+
+  &::after {
+    content: attr(data-caption);
+    display: block;
+    text-align: center;
+    font-family: $font-handwrite;
+    font-size: 14px;
+    color: #666;
+    margin-top: 8px;
+  }
+}
+
+// 卡片悬浮效果
+@mixin card-hover {
+  transition: transform $transition-spring, box-shadow $transition-base;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  }
+}
+
+// 卡通阴影文字
+@mixin cartoon-text($color, $size: 1px) {
+  text-shadow:
+    $size $size 0 $color,
+    -$size $size 0 $color,
+    $size (-$size) 0 $color,
+    (-$size) (-$size) 0 $color;
+}
+
+// 贴纸旋转效果
+@mixin sticker-style($rotation: -5deg) {
+  transform: rotate($rotation);
+  transition: transform $transition-spring;
+
+  &:hover {
+    transform: rotate(0deg) scale(1.1);
+  }
+}

@@ -1,0 +1,113 @@
+[
+  {
+    "id": "post-001",
+    "authorId": "user-001",
+    "authorName": "小旅",
+    "authorAvatar": "",
+    "title": "🌸 上野公园的樱花雨",
+    "content": "那天清晨六点，我们特意赶在游客潮之前到达上野公园。阳光透过樱花树的缝隙洒下来，粉白色的花瓣像雪一样缓缓飘落。",
+    "story": "那天清晨六点，我们特意赶在游客潮之前到达上野公园。阳光透过樱花树的缝隙洒下来，粉白色的花瓣像雪一样缓缓飘落。公园里已经有一些老人在晨练，还有几个摄影师架着三脚架在等待最佳光线。\n\n我蹲下身，拍下了这张从地面仰视的角度——樱花树枝像一把巨大的粉色伞盖，遮住了大半个天空。那一刻，我忽然明白了为什么日本人如此迷恋樱花：不是因为它的盛开，而是因为它注定会凋零。\n\n后来我们在公园门口的小摊上买了热乎乎的鲷鱼烧，一边吃一边看着渐渐多起来的游客。那是我在日本最安静也最满足的一个早晨。",
+    "photoUrl": "/images/photos/photo-001.jpg",
+    "thumbnailUrl": "/images/photos/photo-001.jpg",
+    "photos": ["/images/photos/photo-001.jpg", "/images/photos/photo-002.jpg", "/images/photos/photo-003.jpg"],
+    "location": "上野公园 · 日本东京",
+    "tags": ["樱花", "日本", "春天"],
+    "likes": 128,
+    "likedBy": [],
+    "comments": [
+      { "id": "cmt-001", "userId": "user-002", "userName": "旅行青蛙", "userAvatar": "", "content": "拍得太美了！我也想去日本看樱花 🌸", "createdAt": "2024-03-15T10:00:00Z" },
+      { "id": "cmt-002", "userId": "user-003", "userName": "风吹麦浪", "userAvatar": "", "content": "上野公园的樱花确实绝美，我去的时候还遇到了街头艺人演奏", "createdAt": "2024-03-15T14:30:00Z" },
+      { "id": "cmt-003", "userId": "user-004", "userName": "摄影爱好者", "userAvatar": "", "content": "这个角度太会拍了！用什么相机？", "createdAt": "2024-03-16T09:00:00Z" }
+    ],
+    "createdAt": "2024-03-14T08:00:00Z",
+    "publishedAt": "2024-03-15T08:00:00Z"
+  },
+  {
+    "id": "post-002",
+    "authorId": "user-002",
+    "authorName": "旅行青蛙",
+    "authorAvatar": "",
+    "title": "🗼 巴黎的黄昏，塞纳河的温柔",
+    "content": "塞纳河畔的黄昏美得让人心醉。爬上埃菲尔铁塔俯瞰整个巴黎，这座城市就像一件艺术品。",
+    "story": "在巴黎的最后一个黄昏，我们买了法棍和红酒，坐在塞纳河边人工沙滩上。铁塔在斜阳里变成金色，游船一艘接一艘地驶过，船上的人朝岸上挥手，我们也挥回去。\n\n旁边坐着一位法国老爷爷，他懂一点英语，说他已经在这里住了70年，每个夏天的傍晚都来这里。「Paris is always a good idea」——他举起酒杯，学着电影里的台词。\n\n天色渐暗，铁塔开始闪烁灯光。那一刻我想，如果有一天老了，也要像这样，每天在家门口的城市里旅行。",
+    "photoUrl": "/images/photos/photo-004.jpg",
+    "thumbnailUrl": "/images/photos/photo-004.jpg",
+    "photos": ["/images/photos/photo-004.jpg", "/images/photos/photo-005.jpg", "/images/photos/photo-006.jpg", "/images/photos/photo-007.jpg"],
+    "location": "埃菲尔铁塔 · 法国巴黎",
+    "tags": ["巴黎", "日落", "塞纳河"],
+    "likes": 256,
+    "likedBy": [],
+    "comments": [
+      { "id": "cmt-004", "userId": "user-001", "userName": "小旅", "userAvatar": "", "content": "太浪漫了！铁塔的灯光秀真的值得等 🗼✨", "createdAt": "2024-06-01T20:00:00Z" },
+      { "id": "cmt-005", "userId": "user-005", "userName": "环游世界ing", "userAvatar": "", "content": "那个法国老爷爷的话太暖了 😭", "createdAt": "2024-06-02T08:00:00Z" }
+    ],
+    "createdAt": "2024-05-29T08:00:00Z",
+    "publishedAt": "2024-06-01T08:00:00Z"
+  },
+  {
+    "id": "post-003",
+    "authorId": "user-003",
+    "authorName": "风吹麦浪",
+    "authorAvatar": "",
+    "title": "🏛️ 罗马：两千年的石头会说话",
+    "content": "从罗马斗兽场到梵蒂冈博物馆，每一块石头都在诉说历史。在托斯卡纳的乡间开车，金黄色的麦田和葡萄园美得如同油画。",
+    "story": "在罗马的最后一天，我突发奇想——凌晨4点起床，走路去特雷维喷泉看日出。本以为会是孤独的体验，没想到喷泉旁已经有十多个人了：有日本来的学生团，有拿着三脚架的德国摄影师，还有一对在泉边小声弹吉他的西班牙情侣。\n\n天渐渐亮起来，第一缕阳光照在喷泉中央的海神雕像上，白色大理石变成了暖金色。大家不约而同地安静下来——不需要语言，所有人在那一刻都明白了什么是「永恒之城」。\n\n离开时我扔了一枚硬币：一枚为了回到罗马，一枚为了爱情，一枚为了下一次旅行。",
+    "photoUrl": "/images/photos/photo-008.jpg",
+    "thumbnailUrl": "/images/photos/photo-008.jpg",
+    "photos": ["/images/photos/photo-008.jpg", "/images/photos/photo-009.jpg", "/images/photos/photo-010.jpg"],
+    "location": "罗马斗兽场 · 意大利罗马",
+    "tags": ["罗马", "历史", "日出"],
+    "likes": 189,
+    "likedBy": [],
+    "comments": [
+      { "id": "cmt-006", "userId": "user-001", "userName": "小旅", "userAvatar": "", "content": "特雷维喷泉的日出！太震撼了，我也想看 🌅", "createdAt": "2024-09-20T10:00:00Z" },
+      { "id": "cmt-007", "userId": "user-006", "userName": "背包十年", "userAvatar": "", "content": "罗马真的是一座让人想反复回去的城市 🧡", "createdAt": "2024-09-20T15:00:00Z" },
+      { "id": "cmt-008", "userId": "user-007", "userName": "自由职业者", "userAvatar": "", "content": "三枚硬币的故事 😂 我记得电影里说的是两枚", "createdAt": "2024-09-21T09:00:00Z" },
+      { "id": "cmt-009", "userId": "user-008", "userName": "天空之境", "userAvatar": "", "content": "我也走过托斯卡纳！那片金色麦田真的像天堂", "createdAt": "2024-09-21T16:00:00Z" }
+    ],
+    "createdAt": "2024-09-18T08:00:00Z",
+    "publishedAt": "2024-09-19T08:00:00Z"
+  },
+  {
+    "id": "post-004",
+    "authorId": "user-004",
+    "authorName": "摄影爱好者",
+    "authorAvatar": "",
+    "title": "🏔️ 在洱海边等一个日出",
+    "content": "清晨洱海边的绝美日出。苍山洱海，风花雪月。在大理古城里住了几天，每天看日出看晚霞，骑行环绕洱海。",
+    "story": "来大理之前就听人说「下关风、上关花、苍山雪、洱海月」。我们特意选了一间面朝洱海的客栈，落地窗正对着东方。凌晨五点半，闹钟响了——头天晚上大家都说要看日出，但真到起床时只有我一个人走出了房间。\n\n客栈楼下有一条石板路直通湖边。十二月的清晨凉意袭人，我裹着客栈的毛毯坐在一块大石头上，看着天空从深蓝慢慢变淡，东方泛起一道橘红色的光。苍山的轮廓渐渐清晰，山顶的雪在晨曦中反射着粉色的光。\n\n当太阳终于从山后跳出来的时候，整个洱海像一面金色的镜子。几只水鸟掠过湖面，涟漪在金光中散开。万物都在发光。",
+    "photoUrl": "/images/photos/photo-011.jpg",
+    "thumbnailUrl": "/images/photos/photo-011.jpg",
+    "location": "洱海 · 中国大理",
+    "tags": ["大理", "日出", "洱海", "苍山"],
+    "likes": 92,
+    "likedBy": [],
+    "comments": [
+      { "id": "cmt-010", "userId": "user-002", "userName": "旅行青蛙", "userAvatar": "", "content": "大理真的是治愈系旅行目的地 🏔️", "createdAt": "2024-11-25T12:00:00Z" }
+    ],
+    "createdAt": "2024-11-22T08:00:00Z",
+    "publishedAt": "2024-11-23T08:00:00Z"
+  },
+  {
+    "id": "post-005",
+    "authorId": "user-005",
+    "authorName": "环游世界ing",
+    "authorAvatar": "",
+    "title": "🦘 南半球的夏天",
+    "content": "从悉尼歌剧院到大堡礁，澳大利亚的自然风光令人震撼。在北半球冻成狗的时候，逃到南半球过夏天。",
+    "story": "当北半球的朋友在朋友圈晒羽绒服的时候，我穿着短袖在邦迪海滩晒太阳。\n\n悉尼的邦迪海滩有很多冲浪者——从7岁的小朋友到70岁的老爷爷，不论水平高低，都抱着冲浪板在海浪里进进出出。我报了一个两个小时的冲浪课，教练是个20岁的澳洲小伙子，一口澳式英语听得我一愣一愣。\n\n摔了不下50次之后，我终于在冲浪板上站了两秒钟。就两秒，但已经够我吹一辈子了。南半球的夏天，海水是蓝的，浪花是白的，青春是咸的。",
+    "photoUrl": "/images/photos/photo-014.jpg",
+    "thumbnailUrl": "/images/photos/photo-014.jpg",
+    "location": "邦迪海滩 · 澳大利亚悉尼",
+    "tags": ["悉尼", "海滩", "冲浪", "夏天"],
+    "likes": 215,
+    "likedBy": [],
+    "comments": [
+      { "id": "cmt-011", "userId": "user-001", "userName": "小旅", "userAvatar": "", "content": "邦迪海滩！我也上过冲浪课，两秒已经很厉害了 😂🏄", "createdAt": "2025-01-25T10:00:00Z" },
+      { "id": "cmt-012", "userId": "user-006", "userName": "背包十年", "userAvatar": "", "content": "反季节旅行太机智了", "createdAt": "2025-01-25T16:00:00Z" },
+      { "id": "cmt-013", "userId": "user-003", "userName": "风吹麦浪", "userAvatar": "", "content": "南半球的阳光就是不一样 🌞", "createdAt": "2025-01-26T08:00:00Z" }
+    ],
+    "createdAt": "2025-01-22T08:00:00Z",
+    "publishedAt": "2025-01-23T08:00:00Z"
+  }
+]

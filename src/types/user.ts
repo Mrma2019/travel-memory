@@ -9,7 +9,7 @@ export interface User {
   createdAt: string
   preferences: UserPreferences
   role: 'admin' | 'user'
-  status: 'active' | 'disabled'
+  status: '' | 'active' | 'disabled'
 }
 
 export interface UserPreferences {

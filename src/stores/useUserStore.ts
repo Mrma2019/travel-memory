@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import type { User, LoginForm, RegisterForm, ThemeType } from '@/types'
 import mockUser from '@/mock/user.json'
+import { registerApi } from '@/api/register'
 
 export const useUserStore = defineStore('user', () => {
   const currentUser = ref<User | null>(null)
@@ -83,31 +84,30 @@ export const useUserStore = defineStore('user', () => {
 
   function register(form: RegisterForm): Promise<{ success: boolean; message: string }> {
     return new Promise((resolve) => {
-      setTimeout(() => {
-        if (form.password !== form.confirmPassword) {
-          resolve({ success: false, message: '两次密码不一致哦~' })
-          return
-        }
-        if (form.password.length < 3) {
-          resolve({ success: false, message: '密码至少需要3个字符~' })
-          return
-        }
-        const user: User = {
-          id: 'user-' + Date.now(),
-          username: form.username,
-          avatar: '',
-          email: form.email,
-          bio: '',
-          hobbies: [],
-          createdAt: new Date().toISOString(),
-          preferences: { theme: 'cartoon', language: 'zh' },
-          role: 'user',
-          status: 'active',
-        }
-        currentUser.value = user
-        save()
-        resolve({ success: true, message: '注册成功！开始你的旅行吧 🌍' })
-      }, 800)
+      if (form.password !== form.confirmPassword) {
+        resolve({ success: false, message: '两次密码不一致哦~' })
+        return
+      }
+      if (form.password.length < 3) {
+        resolve({ success: false, message: '密码至少需要3个字符~' })
+        return
+      }
+      registerApi(form)
+      const user: User = {
+        id: 'user-' + Date.now(),
+        username: form.username,
+        avatar: '',
+        email: form.email,
+        bio: '',
+        hobbies: [],
+        createdAt: new Date().toISOString(),
+        preferences: { theme: 'cartoon', language: 'zh' },
+        role: 'user',
+        status: 'active',
+      }
+      currentUser.value = user
+      save()
+      resolve({ success: true, message: '注册成功！开始你的旅行吧 🌍' })
     })
   }
 

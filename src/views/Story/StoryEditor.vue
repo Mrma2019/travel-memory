@@ -6,7 +6,7 @@ import { useTravelStore } from '@/stores/useTravelStore'
 import { useCommunityStore } from '@/stores/useCommunityStore'
 import { useUserStore } from '@/stores/useUserStore'
 import { PRESET_TAGS } from '@/types'
-import ConfirmDialog from '@/components/common/ConfirmDialog.vue'
+import ConfirmDialog from '@/components/common/Modal.vue'
 
 const route = useRoute()
 const router = useRouter()

@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import type { User, LoginForm, RegisterForm, ThemeType } from '@/types'
 import mockUser from '@/mock/user.json'
-import { registerApi } from '@/api/register'
+import { loginApi, registerApi } from '@/api/user'
 
 export const useUserStore = defineStore('user', () => {
   const currentUser = ref<User | null>(null)
@@ -59,54 +59,50 @@ export const useUserStore = defineStore('user', () => {
     persistUsers()
   }
 
+  // 登录
   function login(form: LoginForm): Promise<{ success: boolean; message: string }> {
     return new Promise((resolve) => {
-      setTimeout(() => {
-        if (form.username && form.password.length >= 3) {
-          const user: User = {
-            ...mockUser[0],
-            id: 'user-' + Date.now(),
-            username: form.username,
-            bio: '',
-            hobbies: [],
-            role: 'user',
-            status: 'active',
-          } as User
+      console.log('request /login')
+      loginApi(form).then(resp => {
+        const { code, msg, data } = resp?.data || {}
+        if (code === 0) {
+
+          localStorage.setItem("token", data.token)
+
+          const user: User = data.userVO
           currentUser.value = user
           save()
           resolve({ success: true, message: '登录成功！✈️' })
         } else {
-          resolve({ success: false, message: '用户名或密码错误 😢' })
+          resolve({ success: false, message: `${msg}/登录失败 😢` })
         }
-      }, 800)
+      })
     })
   }
 
+
+  // 注册
   function register(form: RegisterForm): Promise<{ success: boolean; message: string }> {
-    return new Promise((resolve) => {
+    return new Promise(async (resolve) => {
+      if (!form.username || !form.password || !form.confirmPassword || !form.email) {
+        resolve({ success: false, message: '请填写所有必填字段哦~' })
+        return
+      }
       if (form.password !== form.confirmPassword) {
         resolve({ success: false, message: '两次密码不一致哦~' })
         return
       }
-      if (form.password.length < 3) {
-        resolve({ success: false, message: '密码至少需要3个字符~' })
+      if (form.password.length < 6) {
+        resolve({ success: false, message: '密码至少需要6个字符~' })
         return
       }
-      registerApi(form)
-      const user: User = {
-        id: 'user-' + Date.now(),
-        username: form.username,
-        avatar: '',
-        email: form.email,
-        bio: '',
-        hobbies: [],
-        createdAt: new Date().toISOString(),
-        preferences: { theme: 'cartoon', language: 'zh' },
-        role: 'user',
-        status: 'active',
-      }
-      currentUser.value = user
-      save()
+      await registerApi(form).then(resp => {
+        if (resp?.data.code === 2002) {
+          console.log(resp?.data)
+          resolve({ success: false, message: '邮箱已注册！' })
+          return
+        }
+      })
       resolve({ success: true, message: '注册成功！开始你的旅行吧 🌍' })
     })
   }

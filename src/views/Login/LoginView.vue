@@ -12,8 +12,11 @@ const themeStore = useThemeStore()
 const isLogin = ref(true)
 const loading = ref(false)
 const errorMsg = ref('')
+const showLoginPwd = ref(false)
+const showRegPwd = ref(false)
+const showRegConfirmPwd = ref(false)
 
-const loginForm = ref<LoginForm>({ username: '', password: '' })
+const loginForm = ref<LoginForm>({ email: '', password: '' })
 const registerForm = ref<RegisterForm>({
   username: '',
   password: '',
@@ -27,6 +30,7 @@ async function handleLogin() {
   const result = await userStore.login(loginForm.value)
   loading.value = false
   if (result.success) {
+    errorMsg.value = ''
     router.push('/')
   } else {
     errorMsg.value = result.message
@@ -81,7 +85,7 @@ const themeEmoji = computed(() => themeStore.currentThemeConfig.emoji)
         <button :class="{ active: !isLogin }" @click="isLogin = false">✍️ 注册</button>
       </div>
 
-      <!-- 错误提示 -->
+      <!-- 提示 -->
       <div v-if="errorMsg" class="error-msg">
         <span>{{ errorMsg }}</span>
       </div>
@@ -89,13 +93,23 @@ const themeEmoji = computed(() => themeStore.currentThemeConfig.emoji)
       <!-- 登录表单 -->
       <form v-if="isLogin" class="login-form" @submit.prevent="handleLogin">
         <div class="form-group">
-          <label>👤 用户名</label>
-          <input v-model="loginForm.username" type="text" placeholder="请输入用户名" />
+          <label>👤 邮箱*</label>
+          <input v-model="loginForm.email" type="email" placeholder="请输入邮箱" />
         </div>
         <div class="form-group">
-          <label>🔒 密码</label>
-          <input v-model="loginForm.password" type="password" placeholder="请输入密码" />
+          <label>🔒 密码*</label>
+          <div class="password-wrapper">
+            <input
+              v-model="loginForm.password"
+              :type="showLoginPwd ? 'text' : 'password'"
+              placeholder="请输入密码"
+            />
+            <button type="button" class="pwd-toggle" @click="showLoginPwd = !showLoginPwd">
+              {{ showLoginPwd ? '🙈' : '👁️' }}
+            </button>
+          </div>
         </div>
+        <p class="forgot-pwd" @click="">忘记密码？</p>
         <button type="submit" class="submit-btn" :disabled="loading">
           <span v-if="loading">✈️ 飞行中...</span>
           <span v-else>🚀 出发！</span>
@@ -105,20 +119,38 @@ const themeEmoji = computed(() => themeStore.currentThemeConfig.emoji)
       <!-- 注册表单 -->
       <form v-else class="login-form" @submit.prevent="handleRegister">
         <div class="form-group">
-          <label>👤 用户名</label>
+          <label>👤 用户名*</label>
           <input v-model="registerForm.username" type="text" placeholder="请输入用户名" />
         </div>
         <div class="form-group">
-          <label>📧 邮箱</label>
+          <label>📧 邮箱*</label>
           <input v-model="registerForm.email" type="email" placeholder="请输入邮箱" />
         </div>
         <div class="form-group">
-          <label>🔒 密码</label>
-          <input v-model="registerForm.password" type="password" placeholder="请输入密码（至少3位）" />
+          <label>🔒 密码*</label>
+          <div class="password-wrapper">
+            <input
+              v-model="registerForm.password"
+              :type="showRegPwd ? 'text' : 'password'"
+              placeholder="请输入密码（至少6位）"
+            />
+            <button type="button" class="pwd-toggle" @click="showRegPwd = !showRegPwd">
+              {{ showRegPwd ? '🙈' : '👁️' }}
+            </button>
+          </div>
         </div>
         <div class="form-group">
-          <label>🔒 确认密码</label>
-          <input v-model="registerForm.confirmPassword" type="password" placeholder="请再次输入密码" />
+          <label>🔒 确认密码*</label>
+          <div class="password-wrapper">
+            <input
+              v-model="registerForm.confirmPassword"
+              :type="showRegConfirmPwd ? 'text' : 'password'"
+              placeholder="请再次输入密码"
+            />
+            <button type="button" class="pwd-toggle" @click="showRegConfirmPwd = !showRegConfirmPwd">
+              {{ showRegConfirmPwd ? '🙈' : '👁️' }}
+            </button>
+          </div>
         </div>
         <button type="submit" class="submit-btn" :disabled="loading">
           <span v-if="loading">✈️ 注册中...</span>
@@ -158,34 +190,101 @@ const themeEmoji = computed(() => themeStore.currentThemeConfig.emoji)
   font-size: 48px;
   opacity: 0.3;
 
-  &.deco-1 { top: 10%; left: 10%; animation: cloud-float 8s ease-in-out infinite; }
-  &.deco-2 { top: 15%; right: 15%; font-size: 36px; animation: plane-fly 10s ease-in-out infinite; }
-  &.deco-3 { top: 60%; right: 10%; animation: cloud-float 7s ease-in-out infinite reverse; }
-  &.deco-4 { bottom: 20%; left: 15%; animation: twinkle 2s ease-in-out infinite; }
-  &.deco-5 { bottom: 10%; left: 40%; animation: cloud-float 9s ease-in-out infinite; }
-  &.deco-6 { top: 30%; left: 5%; font-size: 32px; animation: wobble 3s ease-in-out infinite; }
+  &.deco-1 {
+    top: 10%;
+    left: 10%;
+    animation: cloud-float 8s ease-in-out infinite;
+  }
+
+  &.deco-2 {
+    top: 15%;
+    right: 15%;
+    font-size: 36px;
+    animation: plane-fly 10s ease-in-out infinite;
+  }
+
+  &.deco-3 {
+    top: 60%;
+    right: 10%;
+    animation: cloud-float 7s ease-in-out infinite reverse;
+  }
+
+  &.deco-4 {
+    bottom: 20%;
+    left: 15%;
+    animation: twinkle 2s ease-in-out infinite;
+  }
+
+  &.deco-5 {
+    bottom: 10%;
+    left: 40%;
+    animation: cloud-float 9s ease-in-out infinite;
+  }
+
+  &.deco-6 {
+    top: 30%;
+    left: 5%;
+    font-size: 32px;
+    animation: wobble 3s ease-in-out infinite;
+  }
 }
 
 @keyframes cloud-float {
-  0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(30px); }
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(30px);
+  }
 }
 
 @keyframes plane-fly {
-  0% { transform: translate(-200px, 50px) rotate(15deg); opacity: 0; }
-  10% { opacity: 0.3; }
-  90% { opacity: 0.3; }
-  100% { transform: translate(calc(100vw + 200px), -50px) rotate(15deg); opacity: 0; }
+  0% {
+    transform: translate(-200px, 50px) rotate(15deg);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 0.3;
+  }
+
+  90% {
+    opacity: 0.3;
+  }
+
+  100% {
+    transform: translate(calc(100vw + 200px), -50px) rotate(15deg);
+    opacity: 0;
+  }
 }
 
 @keyframes twinkle {
-  0%, 100% { opacity: 0.2; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(1.2); }
+
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.5;
+    transform: scale(1.2);
+  }
 }
 
 @keyframes wobble {
-  0%, 100% { transform: rotate(-5deg); }
-  50% { transform: rotate(5deg); }
+
+  0%,
+  100% {
+    transform: rotate(-5deg);
+  }
+
+  50% {
+    transform: rotate(5deg);
+  }
 }
 
 // 登录卡片
@@ -213,12 +312,14 @@ const themeEmoji = computed(() => themeStore.currentThemeConfig.emoji)
     margin-bottom: 8px;
     animation: heartbeat 2s ease-in-out infinite;
   }
+
   .logo-title {
     font-family: $font-title;
     font-size: 28px;
     color: #2c3e50;
     margin: 0 0 4px;
   }
+
   .logo-sub {
     font-size: 13px;
     color: #aaa;
@@ -227,10 +328,23 @@ const themeEmoji = computed(() => themeStore.currentThemeConfig.emoji)
 }
 
 @keyframes heartbeat {
-  0%, 100% { transform: scale(1); }
-  25% { transform: scale(1.08); }
-  50% { transform: scale(1); }
-  75% { transform: scale(1.08); }
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  25% {
+    transform: scale(1.08);
+  }
+
+  50% {
+    transform: scale(1);
+  }
+
+  75% {
+    transform: scale(1.08);
+  }
 }
 
 // 切换Tabs
@@ -306,6 +420,52 @@ const themeEmoji = computed(() => themeStore.currentThemeConfig.emoji)
       border-color: var(--primary-color);
       box-shadow: 0 0 0 3px rgba(135, 206, 235, 0.15);
     }
+  }
+}
+
+// 密码输入框容器
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  input {
+    width: 100%;
+    padding-right: 44px;
+  }
+
+  .pwd-toggle {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 4px 8px;
+    line-height: 1;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+// 忘记密码
+.forgot-pwd {
+  text-align: right;
+  font-size: 12px;
+  color: #aaa;
+  cursor: pointer;
+  margin: -8px 0 0;
+  transition: color 0.2s;
+  user-select: none;
+
+  &:hover {
+    color: var(--primary-color);
   }
 }
 

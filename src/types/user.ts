@@ -20,7 +20,7 @@ export interface UserPreferences {
 export type ThemeType = 'cartoon' | 'minimal' | 'retro' | 'scifi'
 
 export interface LoginForm {
-  username: string
+  email: string
   password: string
 }
 

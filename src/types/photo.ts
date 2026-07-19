@@ -1,23 +1,23 @@
 /** 照片数据模型 */
-export interface Photo {
-  id: string
-  title: string
-  description: string
-  url: string
-  thumbnailUrl: string
-  location: PhotoLocation
-  takenAt: string
-  travelId: string
-  tags: string[]
-  size: number
-  width: number
-  height: number
-  createdAt: string
-  /** 照片故事 */
-  story?: string
-  storyTitle?: string
-  storyUpdatedAt?: string
-}
+  export interface Photo {
+    id: string
+    title: string
+    description: string
+    url: string
+    thumbnailUrl: string
+    location: PhotoLocation
+    takenAt: string
+    travelId: string
+    tags: string[]
+    size: number
+    width: number
+    height: number
+    createdAt: string
+    /** 照片故事 */
+    story?: string
+    storyTitle?: string
+    storyUpdatedAt?: string
+  }
 
 /** 照片位置信息 */
 export interface PhotoLocation {

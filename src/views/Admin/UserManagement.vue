@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, reactive } from 'vue'
 import { useUserStore } from '@/stores/useUserStore'
-import ConfirmDialog from '@/components/common/ConfirmDialog.vue'
+import ConfirmDialog from '@/components/common/Modal.vue'
 import Toast from '@/components/common/Toast.vue'
 import type { ToastState } from '@/types/common'
 import type { User } from '@/types'

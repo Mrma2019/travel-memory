@@ -6,7 +6,7 @@ import { useTravelStore } from '@/stores/useTravelStore'
 import { PRESET_TAGS } from '@/types'
 import { formatDate, formatFileSize } from '@/utils/format'
 import MapPicker from '@/components/map/MapPicker.vue'
-import ConfirmDialog from '@/components/common/ConfirmDialog.vue'
+import ConfirmDialog from '@/components/common/Modal.vue'
 import Toast from '@/components/common/Toast.vue'
 import type { ToastState } from '@/types/common'
 

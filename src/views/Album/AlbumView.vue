@@ -8,7 +8,7 @@ import MapPicker from '@/components/map/MapPicker.vue'
 import PhotoCard from '@/components/cards/PhotoCard.vue'
 import EmptyState from '@/components/common/EmptyState.vue'
 import TravelForm from '@/components/travel/TravelForm.vue'
-import ConfirmDialog from '@/components/common/ConfirmDialog.vue'
+import ConfirmDialog from '@/components/common/Modal.vue'
 import Toast from '@/components/common/Toast.vue'
 import type { ToastState } from '@/types/common'
 
@@ -380,7 +380,7 @@ onMounted(async () => {
       <div>
         <h1 class="page-title">
           <span class="title-emoji">📷</span>
-          {{ viewMode === 'albums' ? '我的相册' : (currentTravel?.title || '旅行照片') }}
+          {{ viewMode === 'albums' ? '我的旅行' : (currentTravel?.title || '旅行照片') }}
         </h1>
         <p v-if="viewMode === 'albums'" class="page-subtitle">用照片记录每一次旅行 ✨</p>
         <button v-if="viewMode === 'photos'" class="back-btn" @click="backToAlbums">← 返回相册列表</button>
@@ -388,7 +388,7 @@ onMounted(async () => {
       <div class="header-actions">
         <template v-if="viewMode === 'albums'">
           <button v-if="!albumSelectMode" class="manage-btn" @click="enterAlbumSelectMode">
-            📋 管理相册
+            📋 管理
           </button>
           <button v-if="albumSelectMode" class="done-btn" @click="exitAlbumSelectMode">
             ✅ 完成
@@ -540,38 +540,28 @@ onMounted(async () => {
             </button>
             <button class="batch-link cancel" @click="exitAlbumSelectMode">取消</button>
           </div>
-          <button class="batch-delete-btn" :disabled="selectedAlbumIds.size === 0" @click="showAlbumBatchDeleteConfirm = true">
+          <button class="batch-delete-btn" :disabled="selectedAlbumIds.size === 0"
+            @click="showAlbumBatchDeleteConfirm = true">
             🗑️ 删除选中
           </button>
         </div>
       </transition>
 
       <div v-if="filteredTravels.length > 0" class="albums-grid">
-        <div
-          v-for="(t, idx) in filteredTravels"
-          :key="t.id"
-          class="album-card cartoon-card"
+        <div v-for="(t, idx) in filteredTravels" :key="t.id" class="album-card cartoon-card"
           :class="{ 'select-mode': albumSelectMode, 'is-selected': selectedAlbumIds.has(t.id) }"
-          @click="albumSelectMode ? toggleAlbumSelect(t.id) : openTravel(t.id)"
-        >
+          @click="albumSelectMode ? toggleAlbumSelect(t.id) : openTravel(t.id)">
           <!-- 选择勾选框 -->
           <div v-if="albumSelectMode" class="album-select-check" :class="{ checked: selectedAlbumIds.has(t.id) }">
             <span v-if="selectedAlbumIds.has(t.id)">✓</span>
           </div>
           <!-- 单个删除按钮（非选择模式下 hover 显示） -->
-          <button
-            v-if="!albumSelectMode"
-            class="album-delete-btn"
-            title="删除相册"
-            @click.stop="triggerAlbumSingleDelete(t.id)"
-          >🗑️</button>
+          <button v-if="!albumSelectMode" class="album-delete-btn" title="删除相册"
+            @click.stop="triggerAlbumSingleDelete(t.id)">🗑️</button>
           <!-- 封面区域 -->
-          <div
-            class="album-cover-area"
-            :style="albumCovers[t.id]
-              ? { backgroundImage: `url(${albumCovers[t.id]})`, backgroundSize: 'cover', backgroundPosition: 'center' }
-              : { background: albumGradient(idx) }"
-          >
+          <div class="album-cover-area" :style="albumCovers[t.id]
+            ? { backgroundImage: `url(${albumCovers[t.id]})`, backgroundSize: 'cover', backgroundPosition: 'center' }
+            : { background: albumGradient(idx) }">
             <div class="album-cover-badge">
               <span class="album-country-emoji">{{
                 {
@@ -580,7 +570,7 @@ onMounted(async () => {
               }}</span>
             </div>
             <div class="album-photo-count">
-              <span>📷 {{ photoStore.photos.filter(p => p.travelId === t.id).length }}</span>
+              <span>📷 {{photoStore.photos.filter(p => p.travelId === t.id).length}}</span>
             </div>
             <!-- 底部渐变过渡 -->
             <div class="album-cover-fade"></div>
@@ -662,8 +652,9 @@ onMounted(async () => {
       @confirm="confirmAlbumBatchDelete" @cancel="showAlbumBatchDeleteConfirm = false" />
 
     <!-- 相册单个删除确认 -->
-    <ConfirmDialog v-model:visible="showAlbumSingleDeleteConfirm" title="删除相册" content="确定要删除这个相册吗？相册内的照片不会被删除哦~ 🗑️" confirmText="确认删除"
-      cancelText="取消" @confirm="confirmAlbumSingleDelete" @cancel="showAlbumSingleDeleteConfirm = false" />
+    <ConfirmDialog v-model:visible="showAlbumSingleDeleteConfirm" title="删除相册" content="确定要删除这个相册吗？相册内的照片不会被删除哦~ 🗑️"
+      confirmText="确认删除" cancelText="取消" @confirm="confirmAlbumSingleDelete"
+      @cancel="showAlbumSingleDeleteConfirm = false" />
 
     <!-- Toast -->
     <Toast :show="toast.show" :type="toast.type" :message="toast.message" />
@@ -976,8 +967,15 @@ onMounted(async () => {
 }
 
 @keyframes bounce-soft {
-  0%, 100% { transform: translateY(0) }
-  50% { transform: translateY(-8px) }
+
+  0%,
+  100% {
+    transform: translateY(0)
+  }
+
+  50% {
+    transform: translateY(-8px)
+  }
 }
 
 .upload-text {
@@ -1054,7 +1052,10 @@ onMounted(async () => {
   color: #999;
   cursor: pointer;
   font-size: 12px;
-  &:hover { color: #ff6b6b }
+
+  &:hover {
+    color: #ff6b6b
+  }
 }
 
 .preview-grid {
@@ -1071,25 +1072,47 @@ onMounted(async () => {
   overflow: hidden;
   border: 2px solid rgba(0, 0, 0, .06);
 
-  img { width: 100%; height: 100%; object-fit: cover }
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover
+  }
 
   .rem-btn {
-    position: absolute; top: 4px; right: 4px;
-    width: 24px; height: 24px;
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     background: rgba(0, 0, 0, .5);
-    color: white; border: none;
-    font-size: 12px; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    &:hover { background: #ff4444 }
+    color: white;
+    border: none;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      background: #ff4444
+    }
   }
+
   .preview-idx {
-    position: absolute; bottom: 4px; left: 4px;
-    width: 22px; height: 22px;
+    position: absolute;
+    bottom: 4px;
+    left: 4px;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
     background: var(--primary-color);
-    color: white; font-size: 11px; font-weight: 700;
-    display: flex; align-items: center; justify-content: center
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center
   }
 }
 
@@ -1097,72 +1120,220 @@ onMounted(async () => {
   aspect-ratio: 4/3;
   border: 2px dashed rgba(0, 0, 0, .15);
   border-radius: 12px;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; transition: all .3s;
-  font-size: 32px; color: #ccc;
-  &:hover { border-color: var(--primary-color); color: var(--primary-color) }
-  input { display: none }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all .3s;
+  font-size: 32px;
+  color: #ccc;
+
+  &:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color)
+  }
+
+  input {
+    display: none
+  }
 }
 
-.upload-form { margin-top: 16px }
+.upload-form {
+  margin-top: 16px
+}
 
-.batch-titles { margin: 12px 0; max-height: 260px; overflow-y: auto }
+.batch-titles {
+  margin: 12px 0;
+  max-height: 260px;
+  overflow-y: auto
+}
 
 .batch-title-row {
-  display: flex; align-items: center; gap: 10px;
-  padding: 6px 0; border-bottom: 1px solid rgba(0, 0, 0, .04);
-  .batch-thumb { width: 44px; height: 33px; object-fit: cover; border-radius: 6px }
-  input { flex: 1; padding: 8px 12px; border: 2px solid var(--border-color); border-radius: 8px; font-size: 13px; font-family: 'Nunito', 'Noto Sans SC', sans-serif;
-    &:focus { outline: none; border-color: var(--primary-color) }
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, .04);
+
+  .batch-thumb {
+    width: 44px;
+    height: 33px;
+    object-fit: cover;
+    border-radius: 6px
   }
-  .remove-one { background: none; border: none; color: #ccc; cursor: pointer; font-size: 14px;
-    &:hover { color: #ff4444 }
+
+  input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 13px;
+    font-family: 'Nunito', 'Noto Sans SC', sans-serif;
+
+    &:focus {
+      outline: none;
+      border-color: var(--primary-color)
+    }
+  }
+
+  .remove-one {
+    background: none;
+    border: none;
+    color: #ccc;
+    cursor: pointer;
+    font-size: 14px;
+
+    &:hover {
+      color: #ff4444
+    }
   }
 }
 
-.tag-cats { margin-bottom: 8px }
-.tag-cat { margin-bottom: 4px }
-.tag-cat-lbl { font-size: 11px; color: #aaa; font-weight: 600; margin-bottom: 3px; display: block }
-.tag-chips { display: flex; flex-wrap: wrap; gap: 5px }
+.tag-cats {
+  margin-bottom: 8px
+}
+
+.tag-cat {
+  margin-bottom: 4px
+}
+
+.tag-cat-lbl {
+  font-size: 11px;
+  color: #aaa;
+  font-weight: 600;
+  margin-bottom: 3px;
+  display: block
+}
+
+.tag-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px
+}
+
 .tag-chip {
-  padding: 3px 10px; border: 2px solid rgba(0, 0, 0, .08); border-radius: 20px;
-  background: white; font-size: 11px; cursor: pointer; transition: all .2s;
+  padding: 3px 10px;
+  border: 2px solid rgba(0, 0, 0, .08);
+  border-radius: 20px;
+  background: white;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all .2s;
   font-family: 'Nunito', 'Noto Sans SC', sans-serif;
-  &:hover { border-color: var(--primary-color) }
-  &.selected { background: var(--primary-color); color: white; border-color: var(--primary-color) }
+
+  &:hover {
+    border-color: var(--primary-color)
+  }
+
+  &.selected {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color)
+  }
 }
 
-.selected-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 }
+.selected-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0
+}
+
 .selected-tag {
-  display: inline-flex; align-items: center; gap: 4px;
-  padding: 4px 12px; background: var(--primary-color); color: white;
-  border-radius: 20px; font-size: 12px; font-weight: 600;
-  button { background: none; border: none; color: rgba(255,255,255,0.7); cursor: pointer; font-size: 14px; padding: 0; &:hover { color: white } }
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  background: var(--primary-color);
+  color: white;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+
+  button {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0;
+
+    &:hover {
+      color: white
+    }
+  }
 }
 
-.custom-tag-input { display: flex; gap: 8px; margin-top: 6px;
-  input { flex: 1 }
-  button { padding: 8px 16px; background: var(--accent-color); border: none; border-radius: 20px; font-weight: 600; font-size: 12px; cursor: pointer; font-family: 'Nunito','Noto Sans SC',sans-serif }
+.custom-tag-input {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+
+  input {
+    flex: 1
+  }
+
+  button {
+    padding: 8px 16px;
+    background: var(--accent-color);
+    border: none;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: 'Nunito', 'Noto Sans SC', sans-serif
+  }
 }
 
-.location-row { display: flex; gap: 8px; input { flex: 1 } }
+.location-row {
+  display: flex;
+  gap: 8px;
+
+  input {
+    flex: 1
+  }
+}
 
 .map-pick-btn {
-  display: flex; align-items: center; gap: 4px; padding: 8px 16px;
-  background: white; border: 2px solid var(--border-color); border-radius: 8px;
-  font-size: 13px; cursor: pointer; white-space: nowrap;
-  font-family: 'Nunito', 'Noto Sans SC', sans-serif; transition: all .2s;
-  &:hover { border-color: var(--primary-color) }
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 16px;
+  background: white;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: 'Nunito', 'Noto Sans SC', sans-serif;
+  transition: all .2s;
+
+  &:hover {
+    border-color: var(--primary-color)
+  }
 }
 
 .upload-submit-btn {
-  width: 100%; padding: 14px;
+  width: 100%;
+  padding: 14px;
   background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-  color: white; border: none; border-radius: 24px;
-  font-weight: 700; font-size: 15px; cursor: pointer; transition: all .3s;
+  color: white;
+  border: none;
+  border-radius: 24px;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all .3s;
   font-family: 'Nunito', 'Noto Sans SC', sans-serif;
-  &:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.15) }
-  &:disabled { opacity: .7 }
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, .15)
+  }
+
+  &:disabled {
+    opacity: .7
+  }
 }
 
 // 相册卡片（全新设计）
@@ -1201,7 +1372,15 @@ onMounted(async () => {
 
   &.select-mode {
     cursor: pointer;
-    &:hover { transform: none; box-shadow: none; .album-cover-area { transform: none; } }
+
+    &:hover {
+      transform: none;
+      box-shadow: none;
+
+      .album-cover-area {
+        transform: none;
+      }
+    }
   }
 
   &.is-selected {
@@ -1275,8 +1454,15 @@ onMounted(async () => {
 }
 
 @keyframes pulse-ring {
-  0% { transform: scale(0.8); opacity: 1; }
-  100% { transform: scale(1.6); opacity: 0; }
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
 }
 
 // 封面区域
@@ -1336,7 +1522,7 @@ onMounted(async () => {
   left: 0;
   right: 0;
   height: 50%;
-  background: linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+  background: linear-gradient(to top, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
   z-index: 1;
   pointer-events: none;
 }

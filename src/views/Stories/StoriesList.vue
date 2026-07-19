@@ -3,7 +3,7 @@ import { ref, onMounted, computed, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { usePhotoStore } from '@/stores/usePhotoStore'
 import { formatDate } from '@/utils/format'
-import ConfirmDialog from '@/components/common/ConfirmDialog.vue'
+import ConfirmDialog from '@/components/common/Modal.vue'
 import Toast from '@/components/common/Toast.vue'
 import type { ToastState } from '@/types/common'
 

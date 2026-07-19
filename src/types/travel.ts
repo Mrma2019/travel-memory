@@ -13,7 +13,7 @@ export interface Travel {
   photos: string[]
   tags: string[]
   rating: 0 | 1 | 2 | 3 | 4 | 5
-  createdAt: string
+  createdAt?: string
   coverUrl?: string // 相册封面图 (dataUrl)
 }
 

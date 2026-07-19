@@ -5,6 +5,7 @@ import mockTravel from '@/mock/travel.json'
 import mockTimeline from '@/mock/timeline.json'
 import mockPhoto from '@/mock/photo.json'
 import { usePhotoStore } from './usePhotoStore'
+import { createTravelApi, queryAllTravelApi } from '@/api/travel'
 
 const STORAGE_KEY = 'travel-memory-travels'
 
@@ -110,9 +111,18 @@ export const useTravelStore = defineStore('travel', () => {
     // 合并：mock 数据 + localStorage 中用户新增的
     const storedIds = new Set(stored.map((t) => t.id))
     const merged = [...mockTravels, ...stored.filter((t) => !mockTravels.some((m) => m.id === t.id))]
-    travels.value = merged
+    // travels.value = merged
     timeline.value = mockTimeline as TimelineEvent[]
     loading.value = false
+
+    //旅行列表
+    queryAllTravelApi().then(resp => {
+      const { code, msg, data } = resp?.data || {}
+      if (code === 0) {
+        // console.log(data.records)
+        travels.value = data.records
+      }
+    })
   }
 
   function getTravelById(id: string): Travel | undefined {
@@ -139,24 +149,34 @@ export const useTravelStore = defineStore('travel', () => {
     story: string; tags: string[]; coverUrl?: string
   }): Travel {
     const newTravel: Travel = {
-      id: 'user-travel-' + Date.now(),
       ...data,
       photos: [],
       rating: 0,
-      createdAt: new Date().toISOString(),
-    }
-    travels.value.push(newTravel)
-    saveTravels(travels.value)
-    // 同时创建一个 timeline 事件
-    timeline.value.push({
-      id: 'event-user-' + Date.now(),
-      type: 'arrival',
-      date: data.startDate,
-      title: `📍 抵达${data.city}`,
-      description: data.story || `来到了${data.country}的${data.city}`,
-      icon: '📍',
-      travelId: newTravel.id,
+      // createdAt: new Date().toISOString(),
+    } as any
+
+    //新增旅行
+    createTravelApi(newTravel).then(resp => {
+      const { code, msg, data } = resp?.data || {}
+      if (code === 0) {
+        console.log('新增旅行成功', data)
+      } else {
+        console.error('新增旅行失败', msg)
+      }
     })
+
+    // travels.value.push(newTravel)
+    // saveTravels(travels.value)
+    // 同时创建一个 timeline 事件
+    // timeline.value.push({
+    //   id: 'event-user-' + Date.now(),
+    //   type: 'arrival',
+    //   date: data.startDate,
+    //   title: `📍 抵达${data.city}`,
+    //   description: data.story || `来到了${data.country}的${data.city}`,
+    //   icon: '📍',
+    //   travelId: newTravel.id,
+    // })
     return newTravel
   }
 

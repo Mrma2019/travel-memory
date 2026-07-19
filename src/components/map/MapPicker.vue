@@ -77,6 +77,7 @@ async function placeMarker(lng: number, lat: number) {
   }
 
   selectedPos.value = { lat, lng }
+  // console.log('Placing marker at:', lng, lat)
 
   const AMap = window.AMap || (await import('@amap/amap-jsapi-loader')).default
 

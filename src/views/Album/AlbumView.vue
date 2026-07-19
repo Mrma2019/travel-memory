@@ -349,6 +349,9 @@ function albumGradient(index: number): string {
 
 // ---- 初始化 ----
 onMounted(async () => {
+
+  //旅行列表
+
   await Promise.all([photoStore.fetchPhotos(), travelStore.fetchTravels()])
   loading.value = false
 

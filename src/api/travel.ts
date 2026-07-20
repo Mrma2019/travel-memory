@@ -3,8 +3,12 @@ import type { Travel } from '@/types'
 
 //旅行列表
 export function queryAllTravelApi() {
-    return request.get(
-        '/travel/all'
+    return request.post(
+        '/travel/all',
+        {
+            page: 1,
+            size: 18
+        }
     )
 }
 
@@ -13,5 +17,12 @@ export function createTravelApi(travel: Travel) {
     return request.post(
         '/travel/add',
         travel
+    )
+}
+
+//删除旅行
+export function delTravbelByIdApi(id: string) {
+    return request.get(
+        `/travel/del/${id}`
     )
 }

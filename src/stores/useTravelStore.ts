@@ -6,6 +6,7 @@ import mockTimeline from '@/mock/timeline.json'
 import mockPhoto from '@/mock/photo.json'
 import { usePhotoStore } from './usePhotoStore'
 import { createTravelApi, queryAllTravelApi } from '@/api/travel'
+import { uploadFileApi } from '@/api/file'
 
 const STORAGE_KEY = 'travel-memory-travels'
 
@@ -117,6 +118,7 @@ export const useTravelStore = defineStore('travel', () => {
 
     //旅行列表
     queryAllTravelApi().then(resp => {
+      console.log(resp?.data)
       const { code, msg, data } = resp?.data || {}
       if (code === 0) {
         // console.log(data.records)
@@ -146,24 +148,28 @@ export const useTravelStore = defineStore('travel', () => {
   function addTravel(data: {
     title: string; country: string; countryCode: string; city: string
     lat: number; lng: number; startDate: string; endDate: string
-    story: string; tags: string[]; coverUrl?: string
+    story: string; tags: string[]; coverUrl?: string, coverFile?: File | null
   }): Travel {
     const newTravel: Travel = {
       ...data,
       photos: [],
       rating: 0,
       // createdAt: new Date().toISOString(),
-    }
+    } as any
 
     //新增旅行
     createTravelApi(newTravel).then(resp => {
-      const { code, msg, data } = resp?.data || {}
-      if (code === 0) {
-        console.log('新增旅行成功', data)
-      } else {
-        console.error('新增旅行失败', msg)
-      }
+      const { code, msg, data } = resp?.data || {}        
     })
+
+    uploadFileApi(data?.coverFile || null).then(resp=>{
+      console.log('upload', resp?.data)
+    }).catch(err=>{
+      console.log(err)
+    })
+
+    //刷新
+    fetchTravels()
 
     // travels.value.push(newTravel)
     // saveTravels(travels.value)

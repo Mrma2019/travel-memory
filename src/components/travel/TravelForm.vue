@@ -9,6 +9,7 @@ const travelStore = useTravelStore()
 const saving = ref(false)
 const showMapPicker = ref(false)
 const coverUrl = ref<string | null>(null)
+const coverFile = ref<File | null>(null)
 const formEl = ref<HTMLElement | null>(null)
 const mapSectionEl = ref<HTMLElement | null>(null)
 
@@ -26,10 +27,15 @@ function handleCoverSelect(e: Event) {
   const target = e.target as HTMLInputElement
   const file = target.files?.[0]
   target.value = ''
-  if (!file || !file.type.startsWith('image/')) return
+  if (!file || !file.type.startsWith('image/')) {
+    coverFile.value = null
+    return
+  }
+  coverFile.value = file
   const reader = new FileReader()
-  reader.onload = () => { coverUrl.value = reader.result as string }
-  reader.readAsDataURL(file)
+  // reader.onload = () => { coverUrl.value = reader.result as string }
+  // reader.readAsDataURL(file)
+  coverUrl.value = URL.createObjectURL(file)//立即显示，不占用额外内存
 }
 
 function removeCover() { coverUrl.value = null }
@@ -90,6 +96,7 @@ async function handleSave() {
     story: form.value.story,
     tags: form.value.tags,
     coverUrl: coverUrl.value || undefined,
+    coverFile: coverFile.value
   })
   saving.value = false
   emit('saved')
@@ -121,11 +128,11 @@ async function handleSave() {
     <div class="form-row">
       <div class="form-group">
         <label>🌍 国家</label>
-        <input v-model="form.country" placeholder="如：日本" />
+        <input v-model="form.country" placeholder="如：中国" />
       </div>
       <div class="form-group">
         <label>🏙️ 城市</label>
-        <input v-model="form.city" placeholder="如：东京" />
+        <input v-model="form.city" placeholder="如：上海" />
       </div>
     </div>
 
@@ -348,8 +355,8 @@ async function handleSave() {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  // padding: 8px 12px;
-  // border: 2px solid var(--border-color, rgba(0, 0, 0, 0.08));
+  padding: 8px 12px;
+  border: 2px solid var(--border-color, rgba(0, 0, 0, 0.08));
   border-radius: 8px;
   background: rgba(0, 0, 0, 0.02);
   margin-bottom: 8px;

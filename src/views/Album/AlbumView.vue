@@ -11,6 +11,7 @@ import TravelForm from '@/components/travel/TravelForm.vue'
 import ConfirmDialog from '@/components/common/Modal.vue'
 import Toast from '@/components/common/Toast.vue'
 import type { ToastState } from '@/types/common'
+import { delTravbelByIdApi } from '@/api/travel'
 
 const route = useRoute()
 const router = useRouter()
@@ -117,6 +118,10 @@ function toggleAlbumSelectAll() {
 }
 
 function triggerAlbumSingleDelete(travelId: string) {
+  console.log(travelId)
+  delTravbelByIdApi(travelId).then(resp=>{
+    console.log(resp.data)
+  })
   deletingAlbumId.value = travelId
   showAlbumSingleDeleteConfirm.value = true
 }

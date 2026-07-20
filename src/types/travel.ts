@@ -1,6 +1,6 @@
 /** 旅行记录 */
 export interface Travel {
-  id?: string
+  id: string
   country: string
   countryCode: string // ISO 3166-1 alpha-2
   city: string

@@ -153,7 +153,7 @@ export const useTravelStore = defineStore('travel', () => {
       photos: [],
       rating: 0,
       // createdAt: new Date().toISOString(),
-    } as any
+    }
 
     //新增旅行
     createTravelApi(newTravel).then(resp => {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch, nextTick } from 'vue'
 import { useTravelStore } from '@/stores/useTravelStore'
 import MapPicker from '@/components/map/MapPicker.vue'
 
@@ -9,6 +9,18 @@ const travelStore = useTravelStore()
 const saving = ref(false)
 const showMapPicker = ref(false)
 const coverUrl = ref<string | null>(null)
+const formEl = ref<HTMLElement | null>(null)
+const mapSectionEl = ref<HTMLElement | null>(null)
+
+// 地图展开时滚动到地图位置
+watch(showMapPicker, async (show) => {
+  if (show) {
+    await nextTick()
+    if (formEl.value && mapSectionEl.value) {
+      formEl.value.scrollTo({ top: mapSectionEl.value.offsetTop - 16, behavior: 'smooth' })
+    }
+  }
+})
 
 function handleCoverSelect(e: Event) {
   const target = e.target as HTMLInputElement
@@ -26,6 +38,8 @@ const countryEmojis: Record<string, string> = {
   CN: '🇨🇳', JP: '🇯🇵', FR: '🇫🇷', TH: '🇹🇭', IT: '🇮🇹', AU: '🇦🇺',
   US: '🇺🇸', GB: '🇬🇧', DE: '🇩🇪', ES: '🇪🇸', KR: '🇰🇷', SG: '🇸🇬',
 }
+
+const presetTags = ['🏖️ 海滩', '🏔️ 登山', '🍜 美食', '🏛️ 文化', '🛍️ 购物', '🎢 游乐园', '🌃 夜景', '🚗 自驾', '🏕️ 露营', '♨️ 温泉']
 
 const form = ref({
   title: '',
@@ -83,7 +97,7 @@ async function handleSave() {
 </script>
 
 <template>
-  <div class="travel-form">
+  <div ref="formEl" class="travel-form">
     <!-- 封面选择 -->
     <div class="form-group">
       <label>🖼️ 相册封面</label>
@@ -126,17 +140,13 @@ async function handleSave() {
       </div>
     </div>
 
-    <div class="form-group">
+    <div ref="mapSectionEl" class="form-group">
       <label>📍 旅行地点</label>
       <button class="map-pick-btn" @click="showMapPicker = !showMapPicker">
         🗺️ {{ showMapPicker ? '收起地图' : '在地图上选择位置' }}
       </button>
       <transition name="fade">
-        <MapPicker
-          v-if="showMapPicker"
-          height="220px"
-          @update:model-value="onMapPicked"
-        />
+        <MapPicker v-if="showMapPicker" height="220px" @update:model-value="onMapPicked" />
       </transition>
       <span v-if="form.lat" class="coord-info">
         📌 已选坐标：{{ form.lat.toFixed(4) }}, {{ form.lng.toFixed(4) }}
@@ -150,15 +160,18 @@ async function handleSave() {
 
     <div class="form-group">
       <label>🏷️ 标签</label>
-      <div class="tag-input-row">
-        <input v-model="form.customTagInput" placeholder="输入标签后回车" @keyup.enter="addTag(form.customTagInput)" />
-        <button class="tag-add-btn" @click="addTag(form.customTagInput)">添加</button>
+      <div class="tag-suggestions">
+        <button v-for="tag in presetTags" :key="tag" class="tag-suggestion-chip"
+          :class="{ used: form.tags.includes(tag) }" :disabled="form.tags.includes(tag)" @click="addTag(tag)">
+          {{ tag }}
+        </button>
       </div>
-      <div v-if="form.tags.length" class="tags-row">
-        <span v-for="tag in form.tags" :key="tag" class="tag-chip">
+      <div v-if="form.tags.length" class="tag-input-row">
+        <span v-for="tag in form.tags" :key="tag" class="tag-chip-inline">
           {{ tag }} <button @click="removeTag(tag)">✕</button>
         </span>
       </div>
+      <!-- <input v-model="form.customTagInput" placeholder="输入标签后回车" @keyup.enter="addTag(form.customTagInput)" /> -->
     </div>
 
     <button class="save-btn" :disabled="saving || !form.title.trim()" @click="handleSave">
@@ -184,7 +197,7 @@ async function handleSave() {
   height: 140px;
   border-radius: 12px;
   overflow: hidden;
-  border: 2px solid var(--border-color, rgba(0,0,0,0.08));
+  border: 2px solid var(--border-color, rgba(0, 0, 0, 0.08));
 
   img {
     width: 100%;
@@ -199,7 +212,7 @@ async function handleSave() {
     width: 26px;
     height: 26px;
     border-radius: 50%;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0.5);
     color: white;
     border: none;
     font-size: 12px;
@@ -207,7 +220,10 @@ async function handleSave() {
     display: flex;
     align-items: center;
     justify-content: center;
-    &:hover { background: #ff4444; }
+
+    &:hover {
+      background: #ff4444;
+    }
   }
 }
 
@@ -217,80 +233,182 @@ async function handleSave() {
   justify-content: center;
   width: 100%;
   height: 100px;
-  border: 2px dashed rgba(0,0,0,0.12);
+  border: 2px dashed rgba(0, 0, 0, 0.12);
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.2s;
   font-size: 13px;
   color: #999;
-  font-family: 'Nunito','Noto Sans SC',sans-serif;
+  font-family: 'Nunito', 'Noto Sans SC', sans-serif;
 
   &:hover {
     border-color: var(--primary-color);
     color: var(--primary-color);
   }
 
-  input { display: none; }
+  input {
+    display: none;
+  }
 }
 
 .form-group {
   margin-bottom: 14px;
-  label { display: block; font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 4px; }
-  input, textarea {
-    width: 100%; padding: 10px 14px;
-    border: 2px solid var(--border-color, rgba(0,0,0,0.08));
-    border-radius: 8px; font-size: 13px;
-    font-family: 'Nunito','Noto Sans SC',sans-serif;
-    background: rgba(0,0,0,0.02);
-    &:focus { outline: none; border-color: var(--primary-color); }
+
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
   }
-  textarea { resize: vertical; }
+
+  input,
+  textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 2px solid var(--border-color, rgba(0, 0, 0, 0.08));
+    border-radius: 8px;
+    font-size: 13px;
+    font-family: 'Nunito', 'Noto Sans SC', sans-serif;
+    background: rgba(0, 0, 0, 0.02);
+
+    &:focus {
+      outline: none;
+      border-color: var(--primary-color);
+    }
+  }
+
+  textarea {
+    resize: vertical;
+  }
 }
 
 .form-row {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
 }
 
 .map-pick-btn {
-  display: flex; align-items: center; gap: 4px; padding: 8px 16px;
-  background: white; border: 2px solid var(--border-color); border-radius: 8px;
-  font-size: 13px; cursor: pointer; font-family: 'Nunito','Noto Sans SC',sans-serif;
-  &:hover { border-color: var(--primary-color); }
-}
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 16px;
+  background: white;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: 'Nunito', 'Noto Sans SC', sans-serif;
 
-.coord-info {
-  display: block; margin-top: 4px; font-size: 11px; color: var(--text-secondary);
-}
-
-.tag-input-row {
-  display: flex; gap: 8px;
-  input { flex: 1; }
-  .tag-add-btn {
-    padding: 8px 16px; background: var(--accent-color);
-    border: none; border-radius: 20px; font-weight: 600; font-size: 12px; cursor: pointer;
-    font-family: 'Nunito','Noto Sans SC',sans-serif;
+  &:hover {
+    border-color: var(--primary-color);
   }
 }
 
-.tags-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.coord-info {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
 
-.tag-chip {
-  display: inline-flex; align-items: center; gap: 4px;
-  padding: 4px 12px; background: var(--primary-color);
-  color: white; border-radius: 20px; font-size: 12px; font-weight: 600;
-  button { background: none; border: none; color: rgba(255,255,255,0.7); cursor: pointer; font-size: 13px; padding: 0; }
+.tag-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.tag-suggestion-chip {
+  padding: 4px 10px;
+  background: rgba(0, 0, 0, 0.04);
+  border: 1.5px solid var(--border-color, rgba(0, 0, 0, 0.08));
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary, #666);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Nunito', 'Noto Sans SC', sans-serif;
+
+  &:hover:not(:disabled) {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    background: rgba(255, 107, 138, 0.06);
+  }
+
+  &.used {
+    opacity: 0.4;
+    cursor: default;
+  }
+}
+
+.tag-input-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  // padding: 8px 12px;
+  // border: 2px solid var(--border-color, rgba(0, 0, 0, 0.08));
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.02);
+  margin-bottom: 8px;
+  min-height: 38px;
+}
+
+.tag-chip-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  background: var(--primary-color);
+  color: white;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+
+  button {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    font-size: 13px;
+    padding: 0;
+  }
 }
 
 .save-btn {
-  width: 100%; padding: 12px;
+  width: 100%;
+  padding: 12px;
   background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-  color: white; border: none; border-radius: 24px;
-  font-weight: 700; font-size: 15px; cursor: pointer; transition: all 0.3s;
-  margin-top: 8px; font-family: 'Nunito','Noto Sans SC',sans-serif;
-  &:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
-  &:disabled { opacity: 0.7; }
+  color: white;
+  border: none;
+  border-radius: 24px;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 8px;
+  font-family: 'Nunito', 'Noto Sans SC', sans-serif;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  &:disabled {
+    opacity: 0.7;
+  }
 }
 
-.fade-enter-active, .fade-leave-active { transition: opacity 0.3s, transform 0.3s; }
-.fade-enter-from, .fade-leave-to { opacity: 0; transform: translateY(-8px); }
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
+}
 </style>

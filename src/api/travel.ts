@@ -7,7 +7,7 @@ export function queryAllTravelApi() {
         '/travel/all',
         {
             page: 1,
-            size: 18
+            size: 9
         }
     )
 }

@@ -95,9 +95,8 @@ async function handleSave() {
     endDate: form.value.endDate || new Date().toISOString().slice(0, 10),
     story: form.value.story,
     tags: form.value.tags,
-    coverUrl: coverUrl.value || undefined,
-    coverFile: coverFile.value
-  })
+    coverUrl: coverUrl.value || undefined
+  }, coverFile.value)
   saving.value = false
   emit('saved')
 }

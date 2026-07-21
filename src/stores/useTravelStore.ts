@@ -148,8 +148,8 @@ export const useTravelStore = defineStore('travel', () => {
   function addTravel(data: {
     title: string; country: string; countryCode: string; city: string
     lat: number; lng: number; startDate: string; endDate: string
-    story: string; tags: string[]; coverUrl?: string, coverFile?: File | null
-  }): Travel {
+    story: string; tags: string[]; coverUrl?: string
+  }, coverFile: File | null): Travel {
     const newTravel: Travel = {
       ...data,
       photos: [],
@@ -158,15 +158,15 @@ export const useTravelStore = defineStore('travel', () => {
     } as any
 
     //新增旅行
-    createTravelApi(newTravel).then(resp => {
+    createTravelApi(newTravel, coverFile).then(resp => {
       const { code, msg, data } = resp?.data || {}        
     })
 
-    uploadFileApi(data?.coverFile || null).then(resp=>{
-      console.log('upload', resp?.data)
-    }).catch(err=>{
-      console.log(err)
-    })
+    // uploadFileApi(data?.coverFile || null).then(resp=>{
+    //   console.log('upload', resp?.data)
+    // }).catch(err=>{
+    //   console.log(err)
+    // })
 
     //刷新
     fetchTravels()

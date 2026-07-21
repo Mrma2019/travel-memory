@@ -104,16 +104,16 @@ const router = createRouter({
 
 // 路由守卫
 router.beforeEach((to, _from, next) => {
-  const userStr = localStorage.getItem('travel-memory-user')
+  const token = localStorage.getItem('token')
 
   if (to.meta.noAuth) {
-    if (userStr) {
+    if (token) {
       next('/')
     } else {
       next()
     }
   } else {
-    if (!userStr) {
+    if (!token) {
       next('/login')
     } else {
       next()

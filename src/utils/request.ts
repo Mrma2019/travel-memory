@@ -6,7 +6,7 @@ const request = axios.create({
     timeout: 30000
 })
 
-
+//请求
 request.interceptors.request.use(
     config => {
         const token = localStorage.getItem("token");
@@ -21,6 +21,7 @@ request.interceptors.request.use(
     }
 )
 
+///响应
 request.interceptors.response.use(
     response => {
         return response;
@@ -28,8 +29,7 @@ request.interceptors.response.use(
     error => {
         if (error.response) {
             const { status } = error.response;
-            if (status === 401) {
-                // Handle unauthorized access, e.g., redirect to login page
+            if (status == 401) {
                 router.push("/login")
                 console.error("Unauthorized access - perhaps redirect to login?");
             }

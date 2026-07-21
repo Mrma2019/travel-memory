@@ -13,10 +13,23 @@ export function queryAllTravelApi() {
 }
 
 //新增旅行
-export function createTravelApi(travel: Travel) {
+export function createTravelApi(travel: Travel, file: File | null) {
+    const formData = new FormData()
+
+    formData.append('travel', JSON.stringify(travel))
+
+    if (file) {
+        formData.append('file', file)
+    }
+
     return request.post(
         '/travel/add',
-        travel
+        formData,
+        {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }
     )
 }
 

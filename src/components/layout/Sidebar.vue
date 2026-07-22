@@ -21,7 +21,6 @@ const menuItems = [
   { path: '/album', label: '我的旅行', icon: '📷' },
   { path: '/stories', label: '旅行故事', icon: '📖' },
   { path: '/timeline', label: '时间轴', icon: '⏳' },
-  { path: '/theme', label: '主题中心', icon: '🎨' },
   { path: '/settings', label: '设置', icon: '⚙️' },
 ]
 

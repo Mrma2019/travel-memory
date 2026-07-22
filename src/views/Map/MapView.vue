@@ -1,4 +1,5 @@
 <script setup lang="ts">
+defineOptions({ name: 'MapView' })
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useTravelStore } from '@/stores/useTravelStore'

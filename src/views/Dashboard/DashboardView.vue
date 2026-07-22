@@ -1,4 +1,5 @@
 <script setup lang="ts">
+defineOptions({ name: 'Dashboard' })
 import { onMounted, ref, computed } from 'vue'
 import { useTravelStore } from '@/stores/useTravelStore'
 import { useTravelStats } from '@/hooks/useTravelStats'

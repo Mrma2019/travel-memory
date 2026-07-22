@@ -17,7 +17,9 @@ const mainStyle = computed(() => ({
     <main class="main-content" :style="mainStyle">
       <router-view v-slot="{ Component }">
         <transition name="fade" mode="out-in">
-          <component :is="Component" :key="$route.fullPath" />
+          <keep-alive :include="['Dashboard', 'MapView', 'AlbumView', 'StoriesList', 'TimelineView', 'CommunityView', 'SettingsView', 'ThemeCenter']">
+            <component :is="Component" :key="$route.fullPath" />
+          </keep-alive>
         </transition>
       </router-view>
     </main>

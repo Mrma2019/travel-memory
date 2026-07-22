@@ -1,8 +1,10 @@
 <script setup lang="ts">
+defineOptions({ name: 'SettingsView' })
 import { ref } from 'vue'
 import { useUserStore } from '@/stores/useUserStore'
-import { useThemeStore } from '@/stores/useThemeStore'
+import { useThemeStore, themeConfigs } from '@/stores/useThemeStore'
 import { useRouter } from 'vue-router'
+import type { ThemeType } from '@/types'
 
 const userStore = useUserStore()
 const themeStore = useThemeStore()
@@ -13,6 +15,11 @@ const email = ref(userStore.currentUser?.email || '')
 const bio = ref(userStore.currentUser?.bio || '')
 const hobbies = ref<string[]>([...(userStore.currentUser?.hobbies || [])])
 const editing = ref(false)
+
+function selectTheme(themeId: string) {
+  themeStore.applyTheme(themeId as ThemeType)
+  userStore.updateTheme(themeId as ThemeType)
+}
 
 // 预设爱好选项（以 checkbox 选择）
 const PRESET_HOBBIES = [
@@ -91,7 +98,7 @@ function exportData() {
         <div class="setting-row">
           <span class="setting-label">当前主题</span>
           <span class="setting-value">{{ themeStore.currentThemeConfig.emoji }} {{ themeStore.currentThemeConfig.name
-            }}</span>
+          }}</span>
         </div>
 
         <!-- 个人简介 -->
@@ -125,6 +132,44 @@ function exportData() {
             <button class="save-profile-btn" @click="saveProfile">💾 保存</button>
             <button class="cancel-btn" @click="editing = false">取消</button>
           </template>
+        </div>
+      </div>
+    </div>
+
+    <!-- 主题中心 -->
+    <div class="section">
+      <h2 class="section-title">🎨 主题</h2>
+      <div class="settings-card cartoon-card theme-section-card">
+        <p class="theme-section-desc">选择你喜欢的旅行风格吧~</p>
+        <div class="theme-grid">
+          <div v-for="theme in themeConfigs" :key="theme.id" class="theme-card"
+            :class="{ active: themeStore.currentTheme === theme.id }" :style="{
+              '--t-primary': theme.colors.primary,
+              '--t-accent': theme.colors.accent,
+            }" @click="selectTheme(theme.id)">
+            <!-- 预览 -->
+            <div class="theme-preview" :style="{
+              background: `linear-gradient(135deg, ${theme.colors.bgStart}, ${theme.colors.bgEnd})`,
+            }">
+              <div class="preview-ui">
+                <div class="preview-sidebar" :style="{ background: theme.colors.primary }"></div>
+                <div class="preview-content">
+                  <div class="preview-card" :style="{ background: theme.colors.cardBg }"></div>
+                  <div class="preview-card preview-card--small" :style="{ background: theme.colors.cardBg }"></div>
+                </div>
+              </div>
+            </div>
+            <!-- 信息 -->
+            <div class="theme-info">
+              <div class="theme-name-row">
+                <span class="theme-emoji">{{ theme.emoji }}</span>
+                <h4>{{ theme.name }}</h4>
+                <span v-if="themeStore.currentTheme === theme.id" class="active-dot"></span>
+              </div>
+              <p class="theme-desc">{{ theme.description }}</p>
+            </div>
+            <div v-if="themeStore.currentTheme === theme.id" class="active-badge">✅ 使用中</div>
+          </div>
         </div>
       </div>
     </div>
@@ -222,6 +267,138 @@ function exportData() {
   font-size: 18px;
   color: #444;
   margin-bottom: 12px
+}
+
+// ---- 主题选择 ----
+.settings-card.theme-section-card {
+  padding: 12px;
+}
+
+.theme-section-card {
+  padding: 20px;
+}
+
+.theme-section-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.theme-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+
+  @include mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+.theme-card {
+  border: 2px solid rgba(0, 0, 0, 0.06);
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  background: rgba(0, 0, 0, 0.01);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  }
+
+  &.active {
+    border-color: var(--t-primary);
+    box-shadow: 0 0 0 1px var(--t-primary);
+  }
+}
+
+.theme-preview {
+  height: 80px;
+  padding: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.preview-ui {
+  display: flex;
+  gap: 6px;
+  height: 100%;
+}
+
+.preview-sidebar {
+  width: 24px;
+  opacity: 0.5;
+  border-radius: 4px;
+}
+
+.preview-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.preview-card {
+  flex: 2;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+
+  &--small {
+    flex: 1;
+    width: 55%;
+  }
+}
+
+.theme-info {
+  padding: 10px 14px;
+}
+
+.theme-name-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+
+  .theme-emoji {
+    font-size: 16px;
+  }
+
+  h4 {
+    font-family: $font-title;
+    font-size: 14px;
+    color: var(--text-primary);
+    margin: 0;
+  }
+
+  .active-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #4caf50;
+    margin-left: auto;
+  }
+}
+
+.theme-desc {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.active-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  padding: 2px 10px;
+  background: var(--t-primary);
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 12px;
+  font-family: $font-title;
 }
 
 .settings-card {

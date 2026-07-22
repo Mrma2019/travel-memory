@@ -1,4 +1,5 @@
 <script setup lang="ts">
+defineOptions({ name: 'TimelineView' })
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useTravelStore } from '@/stores/useTravelStore'

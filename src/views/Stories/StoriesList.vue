@@ -1,4 +1,5 @@
 <script setup lang="ts">
+defineOptions({ name: 'StoriesList' })
 import { ref, onMounted, computed, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { usePhotoStore } from '@/stores/usePhotoStore'

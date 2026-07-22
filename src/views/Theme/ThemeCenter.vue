@@ -1,4 +1,5 @@
 <script setup lang="ts">
+defineOptions({ name: 'ThemeCenter' })
 import { useThemeStore, themeConfigs } from '@/stores/useThemeStore'
 import { useUserStore } from '@/stores/useUserStore'
 import type { ThemeType } from '@/types'

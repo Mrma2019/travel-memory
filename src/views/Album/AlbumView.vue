@@ -1,4 +1,5 @@
 <script setup lang="ts">
+defineOptions({ name: 'AlbumView' })
 import { ref, onMounted, computed, reactive } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { usePhotoStore } from '@/stores/usePhotoStore'
@@ -195,13 +196,12 @@ function removeFile(idx: number) { selectedFiles.value.splice(idx, 1); previewUr
 function clearFiles() { selectedFiles.value = []; previewUrls.value = [] }
 
 const uploadForm = ref({
-  titles: [] as string[], description: '', locationName: '',
+  description: '', locationName: '',
   lat: 0, lng: 0,
   takenAt: new Date().toISOString().slice(0, 16),
   travelId: '', selectedTags: [] as string[], customTagInput: '',
 })
 
-function updatePhotoTitle(index: number, title: string) { uploadForm.value.titles[index] = title }
 function toggleTag(tag: string) {
   const idx = uploadForm.value.selectedTags.indexOf(tag)
   if (idx >= 0) uploadForm.value.selectedTags.splice(idx, 1)
@@ -223,7 +223,7 @@ async function handleUpload() {
   const travelId = selectedTravelId.value || uploadForm.value.travelId
   for (let i = 0; i < selectedFiles.value.length; i++) {
     try {
-      const title = uploadForm.value.titles[i] || `照片 ${i + 1}`
+      const title = `照片 ${i + 1}`
       await photoStore.uploadPhoto(selectedFiles.value[i], {
         title, description: uploadForm.value.description,
         location: { name: uploadForm.value.locationName || '未知地点', lat: uploadForm.value.lat, lng: uploadForm.value.lng },
@@ -236,7 +236,7 @@ async function handleUpload() {
 
 function resetAll() {
   selectedFiles.value = []; previewUrls.value = []
-  uploadForm.value = { titles: [], description: '', locationName: '', lat: 0, lng: 0, takenAt: new Date().toISOString().slice(0, 16), travelId: '', selectedTags: [], customTagInput: '' }
+  uploadForm.value = { description: '', locationName: '', lat: 0, lng: 0, takenAt: new Date().toISOString().slice(0, 16), travelId: '', selectedTags: [], customTagInput: '' }
   uploadError.value = null
 }
 
@@ -421,11 +421,14 @@ onMounted(async () => {
       </div>
     </div>
 
-    <!-- 上传区 -->
-    <transition name="fade">
-      <div v-if="showUpload" class="upload-section">
-        <div class="upload-card cartoon-card">
-          <h3>📤 上传新照片</h3>
+    <!-- 上传区（弹窗） -->
+    <Teleport to="body">
+      <div v-if="showUpload" class="modal-overlay" @click.self="showUpload = false">
+        <div class="modal-card cartoon-card upload-modal-card">
+          <div class="modal-header">
+            <h2>📤 上传照片</h2>
+            <button @click="showUpload = false">✕</button>
+          </div>
           <div v-if="previewUrls.length === 0" class="drag-area" @dragover.prevent @dragleave.prevent
             @drop="handleDrop">
             <div class="upload-zone">
@@ -453,14 +456,6 @@ onMounted(async () => {
           <div v-if="uploadError" class="error-msg">{{ uploadError }}</div>
 
           <div v-if="selectedFiles.length > 0" class="upload-form">
-            <div class="batch-titles">
-              <div v-for="(_, idx) in selectedFiles" :key="idx" class="batch-title-row">
-                <img v-if="previewUrls[idx]" :src="previewUrls[idx]" class="batch-thumb" />
-                <input :value="uploadForm.titles[idx] || ''" :placeholder="`照片 ${idx + 1} 标题`"
-                  @input="updatePhotoTitle(idx, ($event.target as HTMLInputElement).value)" />
-                <button class="remove-one" @click="removeFile(idx)">✕</button>
-              </div>
-            </div>
             <div class="form-row">
               <div class="form-group"><label>📅 拍摄时间</label><input v-model="uploadForm.takenAt" type="datetime-local" />
               </div>
@@ -491,17 +486,19 @@ onMounted(async () => {
                   readonly /><button class="map-pick-btn" @click="showMapPicker = !showMapPicker">🗺️
                   {{ showMapPicker ? '收起' : '选择位置' }}</button></div>
               <transition name="fade">
-                <MapPicker v-if="showMapPicker" height="250px" @update:model-value="onMapPicked" />
+                <MapPicker v-if="showMapPicker" height="220px" @update:model-value="onMapPicked" />
               </transition>
             </div>
-            <div class="form-group"><label>💬 描述</label><textarea v-model="uploadForm.description" rows="3"
-                placeholder="说说照片的故事吧~"></textarea></div>
+            <div class="form-group">
+              <label>💬 描述</label>
+              <textarea v-model="uploadForm.description" rows="6" placeholder="说说照片的故事吧~"></textarea>
+            </div>
             <button class="upload-submit-btn" :disabled="uploading" @click="handleUpload"><span v-if="uploading">📤
                 上传中...</span><span v-else>✨ 上传 {{ selectedFiles.length }} 张照片</span></button>
           </div>
         </div>
       </div>
-    </transition>
+    </Teleport>
 
     <!-- 相册列表视图 -->
     <div v-if="!loading && viewMode === 'albums'">
@@ -930,31 +927,24 @@ onMounted(async () => {
   }
 }
 
-// 上传区
-.upload-section {
-  margin-bottom: 28px
-}
-
-.upload-card {
+// 上传区（弹窗样式）
+.upload-modal-card {
+  width: 560px;
+  max-width: 92vw;
+  max-height: 88vh;
   padding: 24px;
-
-  h3 {
-    font-family: 'Fredoka One', 'ZCOOL KuaiLe', cursive;
-    font-size: 18px;
-    color: var(--text-primary);
-    margin-bottom: 16px
-  }
+  overflow-y: auto;
 }
 
 .drag-area {
   border: 3px dashed rgba(0, 0, 0, .1);
   border-radius: var(--card-radius, 20px);
-  padding: 40px 20px;
+  padding: 30px 16px;
   text-align: center;
   transition: all .3s;
   cursor: pointer;
   background: rgba(255, 255, 255, .5);
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 
   &:hover {
     border-color: var(--primary-color);
@@ -1147,54 +1137,7 @@ onMounted(async () => {
 }
 
 .upload-form {
-  margin-top: 16px
-}
-
-.batch-titles {
-  margin: 12px 0;
-  max-height: 260px;
-  overflow-y: auto
-}
-
-.batch-title-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 6px 0;
-  border-bottom: 1px solid rgba(0, 0, 0, .04);
-
-  .batch-thumb {
-    width: 44px;
-    height: 33px;
-    object-fit: cover;
-    border-radius: 6px
-  }
-
-  input {
-    flex: 1;
-    padding: 8px 12px;
-    border: 2px solid var(--border-color);
-    border-radius: 8px;
-    font-size: 13px;
-    font-family: 'Nunito', 'Noto Sans SC', sans-serif;
-
-    &:focus {
-      outline: none;
-      border-color: var(--primary-color)
-    }
-  }
-
-  .remove-one {
-    background: none;
-    border: none;
-    color: #ccc;
-    cursor: pointer;
-    font-size: 14px;
-
-    &:hover {
-      color: #ff4444
-    }
-  }
+  margin-top: 12px
 }
 
 .tag-cats {

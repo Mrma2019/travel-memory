@@ -1,4 +1,5 @@
 <script setup lang="ts">
+defineOptions({ name: 'CommunityView' })
 import { ref, onMounted, computed } from 'vue'
 import { useCommunityStore } from '@/stores/useCommunityStore'
 import { useUserStore } from '@/stores/useUserStore'
